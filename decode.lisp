@@ -7,22 +7,78 @@
 ;; utility functions 
 (load "include.lisp") ;; "c2i and "i2c"
 
+(defun symbol-or-string-to-string (x)
+       (typecase x
+         (symbol (symbol-name x))
+         (string x)
+         (otherwise (error "Wrong type")))
+      )
+
+
+
+
 
 (defun read-as-list (filename)
 	; Reads a file containing one word per line and returns a list of words (each word is in turn a list of characters)."
 
 	; Implement this function...
 
-	
-	(let ((in (open filename)))
-		(format t " ~a~%" (read-line in))
-		(format t " ~a~%" (read-line in))
-	)
+	(format t "~%")
+	(setq words '( ))
 
-	;;(format t "~a~%" in)
+				(setq words '( ))
+         		(setq word '( ))	
+         		(setq l '())
 
 
+ 	(with-open-file (infile filename
+                              :direction :input)
+       (do (
+       			(sym 
+       				(read-char  infile nil 'eof) 
+       				(read-char  infile nil 'eof)
+       			)
+
+       		)
+         		((eql sym 'eof) 'done)
+
+
+         		(when (or (char= sym #\Space) (char= sym #\Newline))
+         			(nreverse word )
+         			(push word words)	
+         			(setq word '())
+         		;	(format t "girdi~%")
+         		)
+
+         		(when (not(char= sym #\Space))
+         			(setq word (push  sym word))
+         		;	(format t "word: ~a ~%" word)
+         		)
+         		
+
+
+
+
+         		;(setq words (append words (list (string-downcase (symbol-or-string-to-string sym)))))
+        )
+       (close infile)
+    )
+
+ 
+
+	(return-from read-as-list (nreverse words))
 )
+
+
+
+
+
+
+
+
+
+
+
 
 ;; -----------------------------------------------------
 ;; HELPERS
@@ -64,12 +120,19 @@
 	(print "Testing ....")
 	(print "....................................................")
 	(let (doc (read-as-list "document1.txt"))
-		(print doc)
+	;	(print doc)
+		(print (read-as-list "document1.txt"))
+
 	)
 )
 
 
 ;; test code...
 (test_on_test_data)
-(read-as-list "dictionary1.txt")
+
+	;(print (read-as-list "document2.txt"))
+
+;;(setq list1 (append list1 (list '(erkan))))
+;;(print list1)
+
 
