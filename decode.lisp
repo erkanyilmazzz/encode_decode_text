@@ -54,19 +54,13 @@
          			(setq word (push  sym word))
          		
          		)
-         		
-
-
-
-
-         		;(setq words (append words (list (string-downcase (symbol-or-string-to-string sym)))))
         )
        (close infile)
     )
 
  
-
-	(return-from read-as-list (nreverse words))
+ 	(nreverse words)
+	;(return-from read-as-list (nreverse words))
 )
 
 
