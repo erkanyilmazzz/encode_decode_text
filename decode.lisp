@@ -44,15 +44,15 @@
 
 
          		(when (or (char= sym #\Space) (char= sym #\Newline))
+
          			(nreverse word )
          			(push word words)	
          			(setq word '())
-         		;	(format t "girdi~%")
          		)
 
-         		(when (not(char= sym #\Space))
+         		(when (and (not (char= sym #\Space)) (not (char= sym #\Newline)))
          			(setq word (push  sym word))
-         		;	(format t "word: ~a ~%" word)
+         		
          		)
          		
 
@@ -120,7 +120,7 @@
 	(print "Testing ....")
 	(print "....................................................")
 	(let (doc (read-as-list "document1.txt"))
-	;	(print doc)
+		;(print doc)
 		(print (read-as-list "document1.txt"))
 
 	)
