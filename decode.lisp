@@ -1,7 +1,7 @@
 ; *********************************************
 ; *  341 Programming Languages                *
 ; *  Fall 2019                                *
-; *  Author: Yakup Genc                       *
+; *  Author: Erkan Yılmaz                     *
 ; *********************************************
 
 ;; utility functions 
@@ -12,9 +12,15 @@
          (symbol (symbol-name x))
          (string x)
          (otherwise (error "Wrong type")))
-      )
+)
 
-
+(defun all-permutations (list)
+  (cond ((null list) nil)
+        ((null (cdr list)) (list list))
+        (t (loop for element in list
+             append (mapcar (lambda (l) (cons element l))
+                            (all-permutations (remove element list))))))
+)
 
 
 
@@ -41,26 +47,19 @@
 
        		)
          		((eql sym 'eof) 'done)
-
-
          		(when (or (char= sym #\Space) (char= sym #\Newline))
 
          			(nreverse word )
          			(push word words)	
          			(setq word '())
          		)
-
          		(when (and (not (char= sym #\Space)) (not (char= sym #\Newline)))
          			(setq word (push  sym word))
-         		
          		)
         )
        (close infile)
     )
-
- 
  	(nreverse words)
-	;(return-from read-as-list (nreverse words))
 )
 
 
@@ -78,8 +77,21 @@
 ;; HELPERS
 ;; *** PLACE YOUR HELPER FUNCTIONS BELOW ***
 
-(defun spell-checker-0 (word)
+(defun spell-checker-0 (word dic)
 	;you should implement this function
+
+
+;	(cond  ( (equal word (car dic))   t   )
+;		   ( (eq    (car dic) nil )	 nil  )
+;		   ((spell-checker-0 word (cdr dic)))
+;	)
+
+(dolist (n dic)
+	(cond ((equal n word)    (return-from spell-checker-0 t))
+	)
+)
+
+nil
 )
 
 (defun spell-checker-1 (word)
@@ -113,20 +125,42 @@
 	(print "....................................................")
 	(print "Testing ....")
 	(print "....................................................")
-	(let (doc (read-as-list "document1.txt"))
-		;(print doc)
-		(print (read-as-list "document1.txt"))
+	(let ((doc (read-as-list "document1.txt")))
+		(print doc)
+		;(print (read-as-list "document2.txt"))
 
 	)
+
+
+)
+
+(defun spell-checker-0_unit_test()
+
+	(let ((doc (read-as-list "dictionary2.txt")))
+		;(format t "~a" doc)
+		(setq word '(#\t #\h #\i #\s ))
+		(cond ((spell-checker-0 word doc)  (print "buldu"))
+			((print "bulamadı"))	
+		)
+
+	)
+
+
 )
 
 
-;; test code...
-(test_on_test_data)
 
-	;(print (read-as-list "document2.txt"))
+
+;; test code...
+;(test_on_test_data)
+(spell-checker-0_unit_test)
+
+
+
 
 ;;(setq list1 (append list1 (list '(erkan))))
 ;;(print list1)
+
+;(setq l1 '(a b c d e f g h i j k l m n p r s t o u v z))
 
 
