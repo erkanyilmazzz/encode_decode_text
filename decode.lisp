@@ -7,21 +7,6 @@
 ;; utility functions 
 (load "include.lisp") ;; "c2i and "i2c"
 
-(defun symbol-or-string-to-string (x)
-       (typecase x
-         (symbol (symbol-name x))
-         (string x)
-         (otherwise (error "Wrong type")))
-)
-
-(defun all-permutations (list)
-  (cond ((null list) nil)
-        ((null (cdr list)) (list list))
-        (t (loop for element in list
-             append (mapcar (lambda (l) (cons element l))
-                            (all-permutations (remove element list))))))
-)
-
 
 
 (defun read-as-list (filename)
@@ -94,6 +79,20 @@
 nil
 )
 
+
+(defun spell-checker-0_unit_test()
+
+	(let ((doc (read-as-list "dictionary2.txt")))
+		;(format t "~a" doc)
+		(setq word '(#\t #\h #\i #\s ))
+		(cond ((spell-checker-0 word doc)  (print "buldu"))
+			((print "bulamadı"))	
+		)
+
+	)
+)
+
+
 (defun spell-checker-1 (word)
  	;you should implement this function
 )
@@ -102,8 +101,60 @@ nil
 ;; -----------------------------------------------------
 ;; DECODE FUNCTIONS
 
+(defun add-pair (l1 p1 p2 )
+    (setq l1 (cons (cons p1 p2) l1) )
+
+)
+
+(defun add-pair_unit_test ()
+	(setq l '())
+
+	(setq l (add-pair l 1 2))
+	(setq l (add-pair l 5 2))
+	(setq l (add-pair l 1 4))
+	(setq l (add-pair l 7 2))
+
+	(print l)
+)
+
+(defun macher (l)
+	(setq pairs '())
+	(setq abc '(#\a #\b #\c #\d #\e #\f #\g #\h #\i #\j 
+				#\k #\l #\m #\n #\o #\p #\q #\r #\s #\t 
+				#\u #\v #\w #\x #\y #\z ))
+
+
+)
+
 (defun Gen-Decoder-A (paragraph)
 	;you should implement this function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 )
 
 (defun Gen-Decoder-B-0 (paragraph)
@@ -134,33 +185,63 @@ nil
 
 )
 
-(defun spell-checker-0_unit_test()
 
-	(let ((doc (read-as-list "dictionary2.txt")))
-		;(format t "~a" doc)
-		(setq word '(#\t #\h #\i #\s ))
-		(cond ((spell-checker-0 word doc)  (print "buldu"))
-			((print "bulamadı"))	
-		)
+(defun all-permutations (list)
+  (cond ((null list) nil)
+        ;((null (cdr list)) (list list))
+        ((null (cdr list))  (list list))
+        (t (loop for element in list          
+        		;do(format t "~a~%"  (mapcar (lambda (l) (cons element l)) (all-permutations (remove element list))) ) 
+    	        append (mapcar (lambda (l) (cons element l)) (all-permutations (remove element list)))
+        	
+        	)
+        	;(format t "~a~%" (mapcar (lambda (l) (cons element l)))
+        )
+    
+    )
+)
 
-	)
+(defun all-permutations_unit_test  ()
 
+(setq l1 '(a b c d e f ))
+	(format t 	"~a "(all-permutations l1))
+;	(all-permutations l1)
+)
+
+
+(defun map-permutations (fun lst)
+  (if (null lst) (funcall fun nil)
+    (map nil
+       (lambda (x)
+         (map-permutations 
+          (lambda (l) (funcall fun (cons x l))) 
+          (remove x lst)))
+       lst))
+ )
+
+
+(defun print-list (l1)
+	(print l1)
+)
+
+(defun map-permutations_unit_test ()
+
+	(map-permutations #'print-list  '(#\a #\b #\c #\d #\e #\f #\g #\h #\i #\j #\k #\l #\m #\n #\o #\p #\q #\r
+				#\r #\s #\t #\u #\v #\w #\x #\y #\z ))
 
 )
 
 
-
-
 ;; test code...
 ;(test_on_test_data)
-(spell-checker-0_unit_test)
-
+;(spell-checker-0_unit_test)
+(map-permutations_unit_test )
+;(add-pair_unit_test)
 
 
 
 ;;(setq list1 (append list1 (list '(erkan))))
 ;;(print list1)
 
-;(setq l1 '(a b c d e f g h i j k l m n p r s t o u v z))
-
+;(all-permutations_unit_test)
 
