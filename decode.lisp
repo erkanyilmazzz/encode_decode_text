@@ -46,18 +46,6 @@
     )
  	(nreverse words)
 )
-
-
-
-
-
-
-
-
-
-
-
-
 ;; -----------------------------------------------------
 ;; HELPERS
 ;; *** PLACE YOUR HELPER FUNCTIONS BELOW ***
@@ -117,43 +105,44 @@ nil
 	(print l)
 )
 
-(defun macher (l)
+
+;;returns pair if there is stack over flow back to  this
+(defun matcher (l )
 	(setq pairs '())
 	(setq abc '(#\a #\b #\c #\d #\e #\f #\g #\h #\i #\j 
 				#\k #\l #\m #\n #\o #\p #\q #\r #\s #\t 
 				#\u #\v #\w #\x #\y #\z ))
+  (dotimes (n 26)
+    (setq pairs (add-pair pairs (car abc) (car l)))
+    (setq abc (cdr abc))
+    (setq l   (cdr l  ))
+  )
+  ;;generate pairs
+
+  
+
+
+
+
+
+
+
+  (format t   "~a~%~%" pairs)
+
+
 
 
 )
 
+
+(defun decode (l words )
+
+
+)
+
+
 (defun Gen-Decoder-A (paragraph)
 	;you should implement this function
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 )
 
@@ -168,7 +157,6 @@ nil
 (defun Code-Breaker (document decoder)
   	;you should implement this function
 )
-
 ;; -----------------------------------------------------
 ;; Test code...
 
@@ -186,30 +174,7 @@ nil
 )
 
 
-(defun all-permutations (list)
-  (cond ((null list) nil)
-        ;((null (cdr list)) (list list))
-        ((null (cdr list))  (list list))
-        (t (loop for element in list          
-        		;do(format t "~a~%"  (mapcar (lambda (l) (cons element l)) (all-permutations (remove element list))) ) 
-    	        append (mapcar (lambda (l) (cons element l)) (all-permutations (remove element list)))
-        	
-        	)
-        	;(format t "~a~%" (mapcar (lambda (l) (cons element l)))
-        )
-    
-    )
-)
-
-(defun all-permutations_unit_test  ()
-
-(setq l1 '(a b c d e f ))
-	(format t 	"~a "(all-permutations l1))
-;	(all-permutations l1)
-)
-
-
-(defun map-permutations (fun lst)
+(defun map-permutations (fun lst )
   (if (null lst) (funcall fun nil)
     (map nil
        (lambda (x)
@@ -226,10 +191,13 @@ nil
 
 (defun map-permutations_unit_test ()
 
-	(map-permutations #'print-list  '(#\a #\b #\c #\d #\e #\f #\g #\h #\i #\j #\k #\l #\m #\n #\o #\p #\q #\r
+	(map-permutations #'matcher  '(#\a #\b #\c #\d #\e #\f #\g #\h #\i #\j #\k #\l #\m #\n #\o #\p #\q #\r
 				#\r #\s #\t #\u #\v #\w #\x #\y #\z ))
 
 )
+
+
+
 
 
 ;; test code...
@@ -237,8 +205,6 @@ nil
 ;(spell-checker-0_unit_test)
 (map-permutations_unit_test )
 ;(add-pair_unit_test)
-
-
 
 ;;(setq list1 (append list1 (list '(erkan))))
 ;;(print list1)
