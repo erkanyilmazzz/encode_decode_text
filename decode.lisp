@@ -107,7 +107,7 @@ nil
 
 
 ;;returns pair if there is stack over flow back to  this
-(defun matcher (l )
+(defun matcher (l words)
 	(setq pairs '())
 	(setq abc '(#\a #\b #\c #\d #\e #\f #\g #\h #\i #\j 
 				#\k #\l #\m #\n #\o #\p #\q #\r #\s #\t 
@@ -174,13 +174,13 @@ nil
 )
 
 
-(defun map-permutations (fun lst )
-  (if (null lst) (funcall fun nil)
+(defun map-permutations (fun lst  words )
+  (if (null lst) (funcall fun nil words)
     (map nil
        (lambda (x)
          (map-permutations 
-          (lambda (l) (funcall fun (cons x l))) 
-          (remove x lst)))
+          (lambda (l words) (funcall fun (cons x l) words)) 
+          (remove x lst) words))
        lst))
  )
 
@@ -191,8 +191,10 @@ nil
 
 (defun map-permutations_unit_test ()
 
+  (setq words  (read-as-list "document1.txt"))
+
 	(map-permutations #'matcher  '(#\a #\b #\c #\d #\e #\f #\g #\h #\i #\j #\k #\l #\m #\n #\o #\p #\q #\r
-				#\r #\s #\t #\u #\v #\w #\x #\y #\z ))
+				#\r #\s #\t #\u #\v #\w #\x #\y #\z )   words )
 
 )
 
