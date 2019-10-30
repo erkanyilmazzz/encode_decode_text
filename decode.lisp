@@ -107,7 +107,7 @@ nil
 
 
 ;;returns pair if there is stack over flow back to  this
-(defun matcher (l words)
+(defun matcher (l dict words)
 	(setq pairs '())
 	(setq abc '(#\a #\b #\c #\d #\e #\f #\g #\h #\i #\j 
 				#\k #\l #\m #\n #\o #\p #\q #\r #\s #\t 
@@ -133,6 +133,54 @@ nil
 
 
 )
+
+
+(defun change_word (word pairs)
+  ;(format t  "~a" pairs)
+
+  (format t   "~a ~%" pairs)
+  (format t   "~a ~%" word)
+
+  (setq changed_word '())
+
+  (loop for i in word 
+   do(setq changed_word (push   i changed_word))
+            
+    do(loop for j in pairs
+        do(if (eql i (car j))
+          (progn
+            (setq changed_word (remove  i changed_word))
+            (setq changed_word (push   (cdr j) changed_word))
+            )
+             
+
+
+          )
+
+    ;do(format t   "~a ~a ~%" i (car j))
+    
+
+    
+    )
+  )
+  (setq changed_word (nreverse changed_word))
+  (format t "~a " changed_word)
+)
+(defun change_word_unit_test ()
+  (setq pairs '())
+  
+  (setq pairs (add-pair pairs #\t #\a))
+  (setq pairs (add-pair pairs #\h #\b))
+  (setq pairs (add-pair pairs #\i #\c))
+  (setq pairs (add-pair pairs #\s #\d))
+
+  (setq word '( #\a #\d #\s #\t #\h #\i #\s #\c))
+
+
+  (change_word word pairs)
+
+)
+
 
 
 (defun decode (l words )
@@ -174,13 +222,13 @@ nil
 )
 
 
-(defun map-permutations (fun lst  words )
-  (if (null lst) (funcall fun nil words)
+(defun map-permutations (fun lst  dict words )
+  (if (null lst) (funcall fun nil dict words)
     (map nil
        (lambda (x)
          (map-permutations 
-          (lambda (l words) (funcall fun (cons x l) words)) 
-          (remove x lst) words))
+          (lambda (l dict words) (funcall fun (cons x l) dict words)) 
+          (remove x lst) dict words))
        lst))
  )
 
@@ -191,10 +239,12 @@ nil
 
 (defun map-permutations_unit_test ()
 
-  (setq words  (read-as-list "document1.txt"))
+  (setq dict  (read-as-list "dictionary2.txt"))
+  (setq words (read-as-list "text.txt" ))
+;  (format t  "~a " words)
 
 	(map-permutations #'matcher  '(#\a #\b #\c #\d #\e #\f #\g #\h #\i #\j #\k #\l #\m #\n #\o #\p #\q #\r
-				#\r #\s #\t #\u #\v #\w #\x #\y #\z )   words )
+				#\r #\s #\t #\u #\v #\w #\x #\y #\z )   dict  words)
 
 )
 
@@ -205,9 +255,9 @@ nil
 ;; test code...
 ;(test_on_test_data)
 ;(spell-checker-0_unit_test)
-(map-permutations_unit_test )
+;(map-permutations_unit_test )
 ;(add-pair_unit_test)
-
+;(change_word_unit_test)
 ;;(setq list1 (append list1 (list '(erkan))))
 ;;(print list1)
 
