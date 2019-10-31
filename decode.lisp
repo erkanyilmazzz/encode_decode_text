@@ -125,7 +125,7 @@ nil
  
 
   (setq counter 0)
-  (loop for i in words 
+  (loop for i in changed_words 
       do(if ( spell-checker-0 i dict)
           (setq counter (+ counter 1))
       )
@@ -134,6 +134,10 @@ nil
   (format t   "counter: ~a word :~a~%" counter (list-length words))
   (if (= counter (list-length words))
       (print "buldu")
+
+
+
+
 
   )
 
