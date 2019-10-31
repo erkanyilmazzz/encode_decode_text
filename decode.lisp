@@ -106,51 +106,15 @@ nil
 )
 
 
-;;returns pair if there is stack over flow back to  this
-(defun matcher (l dict words)
-
-  (format t "words:::;;;;;::::~a ~%" words)
-  (setq pairs '())
-	(setq abc '(#\a #\b #\c #\d #\e #\f #\g #\h #\i #\j 
-				#\k #\l #\m #\n #\o #\p #\q #\r #\s #\t 
-				#\u #\v #\w #\x #\y #\z ))
-  (dotimes (n 26)
-    (setq pairs (add-pair pairs (car abc) (car l)))
-    (setq abc (cdr abc))
-    (setq l   (cdr l  ))
+(defun change_words (words pairs)
+  (setq changed_words '())
+  (loop for i in words
+      do(setq changed_words (push   (change_word i pairs) changed_words))
+      
   )
-  ;;generate pairs
-  
-  (setq changed_words (change_words words pairs))
- 
-
-  (setq counter 0)
-  (loop for i in changed_words 
-      do(if ( spell-checker-0 i dict)
-          (setq counter (+ counter 1))
-      )
-  )
-
-  (format t   "counter: ~a word :~a~%" counter (list-length words))
-  (if (= counter (list-length words))
-      (print "buldu")
-
-
-
-
-
-  )
-
-
-
-  (format t "changed words::::~a ~%" changed_words)
-
-
+  (nreverse changed_words)
 )
-
-
 (defun change_word (word pairs)
-
   (setq changed_word (copy-list word))
   (setq counter 0)
   
@@ -161,15 +125,14 @@ nil
               (replace changed_word (list (cdr j)):start1 counter)  
             )
           )
-    
     )
     (setq counter (+ 1 counter))
   )
   
-
-;  (format t "~a" word)
   changed_word
 )
+
+
 (defun change_word_unit_test ()
   (setq pairs '())
     (setq pairs (add-pair pairs #\a #\a))
@@ -186,35 +149,13 @@ nil
     (setq pairs (add-pair pairs #\z #\z))
     (setq pairs (add-pair pairs #\t #\t))
     (setq pairs (add-pair pairs #\r #\p))
-
   (setq word '( #\g #\r #\a #\m #\m #\a #\r))
-
     (change_word word pairs)
-  ;(format t "~a"   (change_word word pairs))
-
-  ;(change_word word pairs)
-
-)
-
-(defun change_words (words pairs)
-  (setq changed_words '())
-
-  (loop for i in words
-      do(setq changed_words (push   (change_word i pairs) changed_words))
-      
-  )
-
-
-;(format t "~a "(nreverse changed_words))
-  (nreverse changed_words)
-
-
 )
 
 
 (defun change_words_unit_test()
   (setq pairs '())
-  
     (setq pairs (add-pair pairs #\a #\a))
     (setq pairs (add-pair pairs #\b #\b))
     (setq pairs (add-pair pairs #\c #\c))
@@ -236,9 +177,90 @@ nil
   (format t "words::::::::~a~%~%" words)  
 )
 
+(defun map-permutations (fun lst  dict words )
+  (if (null lst) (funcall fun nil dict words)
+    (map nil
+       (lambda (x)
+            (map-permutations 
+            (lambda (l dict words) 
+
+              (if (not(equal nil (funcall fun (cons x l) dict words)))
+                (progn
+                     (return-from map-permutations (funcall fun (cons x l) dict words))
+              
+                )                
+              )
+
+              ) 
+            (remove x lst) dict words)
+        )
+    lst)
+  )
+)
+(defun print-list (l1)
+  (print l1)
+)
+(defun map-permutations_unit_test ()
+  (setq dict  (read-as-list "dictionary2.txt"))
+  (setq words (read-as-list "text.txt" ))
+  (map-permutations #'matcher  '(#\a #\b #\c #\d #\e #\f #\g #\h #\i #\j #\k #\l #\m #\n #\o #\p #\q 
+        #\r #\s #\t #\u #\v #\w #\x #\y #\z )   dict  words)
+)
+
+
+(defun matcher (l dict words)
+  ;(format t "words:::;;;;;::::~a ~%" words)
+  (setq pairs '())
+	(setq abc '(#\a #\b #\c #\d #\e #\f #\g #\h #\i #\j 
+				#\k #\l #\m #\n #\o #\p #\q #\r #\s #\t 
+				#\u #\v #\w #\x #\y #\z ))
+  (dotimes (n 26)
+    (setq pairs (add-pair pairs (car abc) (car l)))
+    (setq abc (cdr abc))
+    (setq l   (cdr l  ))
+  )
+  ;;generate pairs
+  
+  (setq changed_words (change_words words pairs))
+ 
+
+  (setq counter 0)
+  (loop for i in changed_words 
+      do(if ( spell-checker-0 i dict)
+          (setq counter (+ counter 1))
+      )
+  )
+
+ ;(format t   "counter: ~a word :~a~%" counter (list-length words))
+  (if (= counter (list-length words))
+ ;     (print "buldu")
+      (progn 
+        ;(format t "changed words::::~a ~%" changed_words)
+       #'(lambda (text)
+            (setq changed_words '())
+            (loop for i in text
+                do(setq changed_words (push   (change_word i pairs) changed_words))
+      
+            )
+                    ;(format t "~a "(nreverse changed_words))
+                   (nreverse changed_words)
+          )
+
+      )
+      nil
+  )
+
+)
+
+
+
 (defun Gen-Decoder-A (paragraph)
 	;you should implement this function
+      (setq dict  (read-as-list "dictionary2.txt"))
+    ;  (format t  "~a " words)
 
+  (map-permutations #'matcher  '(#\a #\b #\c #\d #\e #\f #\g #\h #\i #\j #\k #\l #\m #\n #\o #\p #\q 
+        #\r #\s #\t #\u #\v #\w #\x #\y #\z )   dict  paragraph)
 )
 
 (defun Gen-Decoder-B-0 (paragraph)
@@ -250,50 +272,22 @@ nil
 )
 
 (defun Code-Breaker (document decoder)
-  	;you should implement this function
-)
-;; -----------------------------------------------------
-;; Test code...
+ 
+    (format t "~a"     (funcall decoder document ))
 
+)
 (defun test_on_test_data ()
 	(print "....................................................")
 	(print "Testing ....")
 	(print "....................................................")
 	(let ((doc (read-as-list "document1.txt")))
 		(print doc)
-		;(print (read-as-list "document2.txt"))
-
 	)
-
-
 )
 
 
-(defun map-permutations (fun lst  dict words )
-  (if (null lst) (funcall fun nil dict words)
-    (map nil
-       (lambda (x)
-         (map-permutations 
-          (lambda (l dict words) (funcall fun (cons x l) dict words)) 
-          (remove x lst) dict words))
-       lst))
- )
-
-
-(defun print-list (l1)
-	(print l1)
-)
-
-(defun map-permutations_unit_test ()
-
-  (setq dict  (read-as-list "dictionary2.txt"))
-  (setq words (read-as-list "text.txt" ))
-;  (format t  "~a " words)
-
-	(map-permutations #'matcher  '(#\a #\b #\c #\d #\e #\f #\g #\h #\i #\j #\k #\l #\m #\n #\o #\p #\q 
-				#\r #\s #\t #\u #\v #\w #\x #\y #\z )   dict  words)
-
-)
+;; -----------------------------------------------------
+;; Test code...
 
 
 
@@ -302,12 +296,15 @@ nil
 ;; test code...
 ;(test_on_test_data)
 ;(spell-checker-0_unit_test)
-(map-permutations_unit_test )
+;(map-permutations_unit_test )
 ;(add-pair_unit_test)
 ;(change_word_unit_test)
 ;(change_words_unit_test)
 ;;(setq list1 (append list1 (list '(erkan))))
 ;;(print list1)
-
 ;(all-permutations_unit_test)
+    
 
+(setq words (read-as-list "text.txt" ))
+    
+(Code-Breaker words (Gen-Decoder-A words) )
