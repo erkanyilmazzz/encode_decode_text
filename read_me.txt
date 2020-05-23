@@ -1,1 +1,0 @@
- şifreli metin text.txt  dosyasında
