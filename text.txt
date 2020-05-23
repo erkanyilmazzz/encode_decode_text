@@ -1,2 +1,0 @@
-this course cozers topics in programming languages and compilers
-attribute grammars and their use in syntaw directed translation
